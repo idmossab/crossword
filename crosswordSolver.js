@@ -1,4 +1,4 @@
-function checkWords(word){
+function CheckWords(word){
     const regex=/[a-z]/g
     
     if(!Array.isArray(word)||word.length==0){
@@ -23,10 +23,25 @@ function checkWords(word){
     return false 
 }
 
+function CheckPuzzel(puzzl){
+    const regex=/[0|2|1|.]/g
+    if(typeof puzzl!="string"){
+        return true 
+    }
+    console.log(puzzl);
+ for(let i=0;i<puzzl.length;i++){
+
+     if(!puzzl[i].match(regex)){
+         return true
+     }
+ }
+
+}
 
 function crosswordSolver(puzzleMap,words){
     let error =false
-    error = checkWords(words)
+    error = CheckWords(words)
+    error = CheckPuzzel(puzzleMap)
     if(error){
         return console.log("Error");
         
@@ -35,7 +50,7 @@ function crosswordSolver(puzzleMap,words){
     }
 }
 
-
+// const emptyPuzzle=14
 
 const emptyPuzzle = `2001
 0..0
