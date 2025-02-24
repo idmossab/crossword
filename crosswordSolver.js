@@ -222,14 +222,3 @@ casa
 i..l
 anta
 */
-
-
-
-function CheckWordInPuzzel1(puzzel, words) {
-    let wordlen = words.join("").length;
-    let puzz = puzzel.replace(/\n/g, "").replace(/\./g, "");
-
-    let c = puzz.split("").reduce((sum, char) => sum + parseInt(char) + 1, 0);
-    return c !== wordlen;
-}
-console.log(CheckWordInPuzzel1(puzzle, words))
