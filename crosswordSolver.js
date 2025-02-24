@@ -46,7 +46,11 @@ function CheckWordInPuzzel(puzzel, words) {
     const reg = /[\n|\.]/g
     let wordlen = words.join("").length
     let puzz = puzzel.replace(reg, reg => reg = "");
-    let c = puzz.split("").reduce((sum, char) => sum + parseInt(char) + 1, 0);
+    //let c = puzz.split("").reduce((sum, char) => sum + parseInt(char) + 1, 0);
+    let c = 0
+    for (item of puzz) {
+        c += parseInt(item) + 1;
+    }
     return c !== wordlen;
 }
 
