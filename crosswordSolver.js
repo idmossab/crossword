@@ -1,5 +1,3 @@
-// Initialize the solution array to hold all the valid solutions
-let solutions = [];
 //Check validate word:
 function CheckWords(word) {
     const regex = /[^a-z]/g
@@ -136,6 +134,8 @@ function placeVertical(matrix, word, r, c) {
 
     return newMatrix;
 }
+
+let solutions = [];
 
 // Recursive solving function
 function solveCrossword(puzzle, current, words, index) {

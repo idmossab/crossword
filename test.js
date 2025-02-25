@@ -58,7 +58,112 @@ function cloneGrid(grid) {
     return grid.map(row => [...row]);
 }
 //result final
-let solutions
+let solutions = [];
+let foundSolution = false;
+// try put word Horizontal
+function placeHorizontal(puzzleGrid, word, r, c) {
+    const newGrid = cloneGrid(puzzleGrid);
+
+    // check if this word can put horizontal
+    if (c + word.length > puzzleGrid[r].length) {
+        return null;
+    }
+
+    // check if have place after word
+    if (c + word.length < puzzleGrid[r].length && puzzleGrid[r][c + word.length] !== '.') {
+        return null;
+    }
+
+    //check if have place before nbr 1
+    if (puzzleGrid[r][c] === '1' && c > 0 && puzzleGrid[r][c - 1] !== '.') {
+        return null;
+    }
+
+    //try put word
+    for (let i = 0; i < word.length; i++) {
+        const currentChar = puzzleGrid[r][c + i];
+        if (currentChar === '.') {
+            return null;
+        } else if (currentChar !== '0' && currentChar !== '1' && currentChar !== '2' && currentChar !== word[i]) {
+            return null;
+        }
+        newGrid[r][c + i] = word[i];
+    }
+
+    return newGrid;
+}
+
+function placeVertical(puzzleGrid, word, r, c) {
+    const newGrid = cloneGrid(puzzleGrid);
+
+    if (r + word.length > puzzleGrid.length) {
+        return null;
+    }
+
+    if (r + word.length < puzzleGrid.length && puzzleGrid[r + word.length][c] !== '.') {
+        return null;
+    }
+
+    if (puzzleGrid[r][c] === '1' && r > 0 && puzzleGrid[r - 1][c] !== '.') {
+        return null;
+    }
+
+    for (let i = 0; i < word.length; i++) {
+        const currentChar = puzzleGrid[r + i][c];
+        if (currentChar === '.') {
+            return null;
+        } else if (currentChar !== '0' && currentChar !== '1' && currentChar !== '2' && currentChar !== word[i]) {
+            return null;
+        }
+        newGrid[r + i][c] = word[i];
+    }
+
+    return newGrid;
+}
+//recursive
+function solveCrossword(puzzleTemplate, currentGrid, words, index) {
+    // if found solution:
+    if (foundSolution) {
+        return;
+    }
+
+    // if put all words check if that solution 
+    if (index === words.length) {
+        if (isComplete(currentGrid)) {
+            solutions.push(currentGrid);
+            foundSolution = true;
+        }
+        return;
+    }
+
+    // get current word
+    const word = words[index];
+
+    // try put word in place
+    for (let r = 0; r < puzzleTemplate.length; r++) {
+        for (let c = 0; c < puzzleTemplate[r].length; c++) {
+            // try palce have 1 or 2:
+            if (puzzleTemplate[r][c] !== '1' && puzzleTemplate[r][c] !== '2') {
+                continue;
+            }
+
+            // try put Horizontal
+            const horizontalPlacement = placeHorizontal(currentGrid, word, r, c);
+            if (horizontalPlacement) {
+                solveCrossword(puzzleTemplate, horizontalPlacement, words, index + 1);
+                if (foundSolution) return;
+            }
+
+            // try put Vertical
+            const verticalPlacement = placeVertical(currentGrid, word, r, c);
+            if (verticalPlacement) {
+                solveCrossword(puzzleTemplate, verticalPlacement, words, index + 1);
+                if (foundSolution) return;
+            }
+        }
+    }
+}
+
 
 function CheckPalces(puzzel, words) {
     let puzzleGrid = []
@@ -94,46 +199,11 @@ function crosswordSolver(puzzleMap, words) {
     return console.log("succ");
 }
 
-// const puzzle=14
 
 const puzzle = `2001
 0..0
 1000
 0..0`
 const words = ["casa", 'alan', 'ciao', "anta"]
-    // const puzzle = '2001\n0..0\n2000\n0..0'
-    // const puzzle = `...1...........
-    // ..1000001000...
-    // ...0....0......
-    // .1......0...1..
-    // .0....100000000
-    // 100000..0...0..
-    // .0.....1001000.
-    // .0.1....0.0....
-    // .10000000.0....
-    // .0.0......0....
-    // .0.0.....100...
-    // ...0......0....
-    // ..........0....`
-    // const words = [
-    //   'sun',
-    //   'sunglasses',
-    //   'suncream',
-    //   'swimming',
-    //   'bikini',
-    //   'beach',
-    //   'icecream',
-    //   'tan',
-    //   'deckchair',
-    //   'sand',
-    //   'seaside',
-    //   'sandals',
-    // ].reverse()
-    //const words=["","hhh"]
-    //crosswordSolver(puzzle, words)
+crosswordSolver(puzzle, words)
 console.log(CheckPalces(puzzle, words))
-    /* output:
-    `casa
-    i..l
-    anta
-    */
