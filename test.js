@@ -66,7 +66,8 @@ function CheckPalces(puzzel, words) {
     puzzleLines.forEach(line => {
         puzzleGrid.push([...line])
     });
-    //console.log("puzell :", puzzleGrid)
+    console.log("puzell :", puzzleGrid)
+    console.log("puzell-1 :", cloneGrid(puzzleGrid))
     solutions = [];
     foundSolution = false;
     //start recursive solving
@@ -83,7 +84,13 @@ function crosswordSolver(puzzleMap, words) {
     if (CheckWords(words) || CheckPuzzel(puzzleMap) || CheckWordInPuzzel(puzzleMap, words)) {
         return console.log("Error");
     }
-    let position = CheckPalces(puzzleMap, words)
+    let solution = CheckPalces(puzzleMap, words);
+    if (solution === null) {
+        return console.log("Error")
+    } else {
+        // Print the solution
+        console.log(solution.map(row => row.join('')).join('\n'));
+    }
     return console.log("succ");
 }
 
